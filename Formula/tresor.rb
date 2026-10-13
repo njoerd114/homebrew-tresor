@@ -33,6 +33,9 @@ class Tresor < Formula
   end
 
   test do
-    assert_match "tresor", shell_output("#{bin}/tresor --help 2>&1", 0)
+    # v0.1.0 predates the --version flag: verify the binary runs and reports
+    # the missing configuration cleanly instead.
+    assert_match "no configuration",
+                 shell_output("env -u BAO_ADDR -u VAULT_ADDR -u BAO_TOKEN -u VAULT_TOKEN #{bin}/tresor --check 2>&1", 1)
   end
 end
